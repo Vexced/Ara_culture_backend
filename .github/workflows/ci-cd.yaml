@@ -51,9 +51,9 @@ jobs:
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
       - name: Snyk Scan
-        uses: snyk/actions/java-maven@master
+        uses: snyk/actions/maven@0.4.0
         with:
-          args: test
+          command: test
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
