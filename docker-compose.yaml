@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  backend:
+    build: src/main/java/org
+    container_name: araculture_backend
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/araculturedb
+      SPRING_DATASOURCE_USERNAME: araculture_user
+      SPRING_DATASOURCE_PASSWORD: araculture_pass
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - postgres
+    networks:
+      - araculture_net
+
+  postgres:
+    image: postgres:15
+    container_name: araculture_postgres
+    environment:
+      POSTGRES_DB: araculturedb
+      POSTGRES_USER: araculture_user
+      POSTGRES_PASSWORD: araculture_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - araculture_net
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: araculture_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@araculture.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres
+    networks:
+      - araculture_net
+
+volumes:
+  pgdata:
+
+networks:
+  araculture_net:
