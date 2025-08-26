@@ -57,11 +57,7 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v3
-        with:
-          name: backend-jar
-          path: target/*.jar
+
   docker:
     needs: build-test-analyze
     runs-on: ubuntu-latest
