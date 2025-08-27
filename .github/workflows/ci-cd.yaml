@@ -54,7 +54,7 @@ jobs:
             -Dsonar.java.binaries=target/classes
 
       - name: Snyk Scan
-        uses: snyk/actions/maven@0.4.0
+        uses: snyk/actions@v2
         with:
           command: test
         env:
