@@ -24,6 +24,12 @@ pipeline {
             }
         }
 
+        stage('Test SonarCloud Connection') {
+            steps {
+                sh 'curl -v https://sonarcloud.io/api/system/status'
+            }
+        }
+
         stage('SonarQube Analysis') {
             steps {
                 withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
