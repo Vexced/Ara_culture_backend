@@ -28,7 +28,7 @@ pipeline {
                 mvn sonar:sonar \
                   -Dsonar.projectKey=Ara-culture-backend \
                   -Dsonar.organization=vexced \
-                  -Dsonar.host.url=http://sonarcloud.io \
+                  -Dsonar.host.url=https://sonarcloud.io \
                   -Dsonar.login=${SONARQUBE}
                 """
             }
