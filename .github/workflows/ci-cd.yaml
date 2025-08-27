@@ -10,7 +10,7 @@ env:
   SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-  IMAGE_NAME: ara_culture_backend
+  IMAGE_NAME: vexced17/ara_culture_backend
   IMAGE_TAG: ${{ github.sha }}
 
 
