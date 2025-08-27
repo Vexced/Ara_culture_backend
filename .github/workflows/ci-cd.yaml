@@ -53,6 +53,11 @@ jobs:
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
             -Dsonar.java.binaries=target/classes
 
+      - name: Upload JAR
+        uses: actions/upload-artifact@v3
+        with:
+          name: backend-jar
+          path: target/araculture-backend.jar
 
   snyk-scan:
     runs-on: ubuntu-latest
@@ -90,6 +95,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Download JAR
+        uses: actions/download-artifact@v3
+        with:
+          name: backend-jar
+          path: target
 
       - name: Build Docker image backend
         run: docker build -t $IMAGE_NAME:$IMAGE_TAG .
