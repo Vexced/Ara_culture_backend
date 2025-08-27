@@ -66,10 +66,6 @@ jobs:
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
-
-
-
-
   docker:
     needs: build-test-analyze
     runs-on: ubuntu-latest
