@@ -55,6 +55,7 @@ pipeline {
                             fi
 
                             # Ejecuta el scan usando npx
+                            npx snyk auth $SNYK_TOKEN
                             npx snyk test
                         '''
                     }
