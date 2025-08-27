@@ -53,9 +53,11 @@ pipeline {
         stage('Deploy to Server via Docker') {
             steps {
                 script {
-                    def REMOTE_USER = "usuario"
-                    def REMOTE_HOST = "192.168.1.100"
+                    def REMOTE_USER = "vexced"
+                    def REMOTE_HOST = "192.168.100.252"
+                    def REMOTE_DIR = "/home/vexced/IdeaProjects/ara_culture_backend"
                     def IMAGE_NAME = "ara-culture-backend:latest"
+                    def JAR_NAME = "ara-culture-backend-0.0.1-SNAPSHOT.jar"
 
                     // Construir la imagen
                     sh "docker build -t ${IMAGE_NAME} ."
