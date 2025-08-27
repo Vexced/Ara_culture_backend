@@ -74,6 +74,7 @@ pipeline {
                                     sh """
                                     mvn deploy -DskipTests --settings $MAVEN_SETTINGS
                                     """
+                    }
                 }
             }
         }
