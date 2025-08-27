@@ -43,11 +43,10 @@ jobs:
         run: mvn test
 
       - name: SonarQube Analysis
-        uses: sonarsource/sonarcloud-github-action@master
-        with:
-          args: >
-            -Dsonar.projectKey=ara-culture-backend
-            -Dsonar.host.url=${{ secrets.SONAR_HOST_URL }}
+        run: |
+          mvn sonar:sonar \
+            -Dsonar.projectKey=ara-culture-backend \
+            -Dsonar.host.url=http://localhost:9000 \
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
 
       - name: Snyk Scan
