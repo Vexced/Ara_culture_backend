@@ -3,10 +3,12 @@ pipeline {
 
     environment {
         NEXUS_URL = "https://nexus.example.com/repository/maven-releases/"
-        NEXUS_USER = credentials('nexus-user')
-        NEXUS_PASSWORD = credentials('nexus-pass')
-        SONARQUBE = credentials('sonar-token')  // Token de SonarQube
-        SNYK_TOKEN = credentials('snyk-token')  // Token de Snyk
+        SONAR_HOST = "https://sonarcloud.io"
+        IMAGE_NAME = "ara-culture-backend"
+        JAR_NAME = "ara-culture-backend-0.0.1-SNAPSHOT.jar"
+        REMOTE_USER = "vexced"
+        REMOTE_HOST = "192.168.100.252"
+        REMOTE_DIR = "/home/vexced/IdeaProjects/ara_culture_backend"
     }
 
     stages {
@@ -24,54 +26,60 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                sh """
-                mvn sonar:sonar \
-                  -Dsonar.projectKey=Ara-culture-backend \
-                  -Dsonar.organization=vexced \
-                  -Dsonar.host.url=https://sonarcloud.io \
-                  -Dsonar.login=${SONARQUBE}
-                """
+                withCredentials([string(credentialsId: 'sonar-token', variable: 'SONAR_TOKEN')]) {
+                    sh """
+                    mvn sonar:sonar \
+                      -Dsonar.projectKey=Ara-culture-backend \
+                      -Dsonar.organization=vexced \
+                      -Dsonar.host.url=${SONAR_HOST} \
+                      -Dsonar.login=${SONAR_TOKEN}
+                    """
+                }
             }
         }
 
         stage('Snyk Scan') {
             steps {
-                sh "export SNYK_TOKEN=${SNYK_TOKEN} && snyk test"
+                withCredentials([string(credentialsId: 'snyk-token', variable: 'SNYK_TOKEN')]) {
+                    withEnv(["SNYK_TOKEN=${SNYK_TOKEN}"]) {
+                        sh 'snyk test'
+                    }
+                }
             }
         }
 
         stage('Deploy to Nexus') {
             steps {
-                sh """
-                mvn deploy -DskipTests \
-                  -Dnexus.url=$NEXUS_URL \
-                  -Dnexus.username=$NEXUS_USER \
-                  -Dnexus.password=$NEXUS_PASSWORD
-                """
+                withCredentials([
+                    usernamePassword(credentialsId: 'nexus-credentials',
+                                     usernameVariable: 'NEXUS_USER',
+                                     passwordVariable: 'NEXUS_PASSWORD')
+                ]) {
+                    sh """
+                    mvn deploy -DskipTests \
+                      -Dnexus.url=${NEXUS_URL} \
+                      -Dnexus.username=${NEXUS_USER} \
+                      -Dnexus.password=${NEXUS_PASSWORD}
+                    """
+                }
             }
         }
 
         stage('Deploy to Server via Docker') {
             steps {
                 script {
-                    def REMOTE_USER = "vexced"
-                    def REMOTE_HOST = "192.168.100.252"
-                    def REMOTE_DIR = "/home/vexced/IdeaProjects/ara_culture_backend"
-                    def IMAGE_NAME = "ara-culture-backend:latest"
-                    def JAR_NAME = "ara-culture-backend-0.0.1-SNAPSHOT.jar"
+                    def REMOTE = "${REMOTE_USER}@${REMOTE_HOST}"
+                    def IMAGE_TAG = "${IMAGE_NAME}:latest"
 
-                    // Construir la imagen
-                    sh "docker build -t ${IMAGE_NAME} ."
+                    sh "docker build -t ${IMAGE_TAG} ."
+                    sh "docker save ${IMAGE_TAG} | bzip2 | ssh ${REMOTE} 'bunzip2 | docker load'"
 
-                    // Enviar imagen al servidor
-                    sh "docker save ${IMAGE_NAME} | bzip2 | ssh ${REMOTE_USER}@${REMOTE_HOST} 'bunzip2 | docker load'"
-
-                    // Reiniciar contenedor remoto
                     sh """
-                    ssh ${REMOTE_USER}@${REMOTE_HOST} '
+                    ssh ${REMOTE} '
+                      set -e
                       docker stop ara-backend || true
                       docker rm ara-backend || true
-                      docker run -d --name ara-backend -p 8080:8080 ${IMAGE_NAME}
+                      docker run -d --name ara-backend -p 8080:8080 ${IMAGE_TAG}
                     '
                     """
                 }
