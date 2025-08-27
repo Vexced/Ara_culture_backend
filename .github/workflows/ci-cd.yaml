@@ -53,13 +53,14 @@ jobs:
             -Dsonar.login=${{ secrets.SONAR_TOKEN }}
             -Dsonar.java.binaries=target/classes
 
+      - name: Install Snyk CLI
+        run: npm install -g snyk
+
       - name: Snyk Scan
-        uses: snyk/actions/maven@0.4.0
-        with:
-          command: test
+        run: snyk test --all-projects
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-          JAVA_HOME: ${{ env.JAVA_HOME_17_X64 }}
+
 
 
 
