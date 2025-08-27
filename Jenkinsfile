@@ -48,6 +48,7 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'snyk-token', variable: 'SNYK_TOKEN')]) {
                     withEnv(["SNYK_TOKEN=${SNYK_TOKEN}"]) {
+                        sh 'npm install -g snyk'
                         sh 'snyk test'
                     }
                 }
