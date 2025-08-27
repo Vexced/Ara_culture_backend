@@ -48,8 +48,15 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'snyk-token', variable: 'SNYK_TOKEN')]) {
                     withEnv(["SNYK_TOKEN=${SNYK_TOKEN}"]) {
-                        sh 'npm install -g snyk'
-                        sh 'snyk test'
+                        sh '''
+                            # Instala snyk localmente en el workspace si no existe
+                            if [ ! -d "node_modules/snyk" ]; then
+                                npm install snyk
+                            fi
+
+                            # Ejecuta el scan usando npx
+                            npx snyk test
+                        '''
                     }
                 }
             }
