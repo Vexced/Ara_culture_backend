@@ -27,7 +27,7 @@ pipeline {
                 sh """
                 mvn sonar:sonar \
                   -Dsonar.projectKey=ara-culture-backend \
-                  -Dsonar.host.url=http://localhost:9000 \
+                  -Dsonar.host.url=http://sonarcloud.io \
                   -Dsonar.login=${SONARQUBE}
                 """
             }
