@@ -54,7 +54,7 @@ jobs:
             -Dsonar.java.binaries=target/classes
 
       - name: Upload JAR
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: backend-jar
           path: target/araculture-backend.jar
