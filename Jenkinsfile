@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/Vexced/Ara_culture_backend'
+                git branch: 'main', url: 'https://github.com/Vexced/Ara_culture_backend'
             }
         }
 
