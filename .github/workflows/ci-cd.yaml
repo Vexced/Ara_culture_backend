@@ -79,7 +79,7 @@ jobs:
   docker:
     needs: [build-test-analyze, snyk-scan]
     runs-on: ubuntu-latest
-    if: needs.build-test.result == 'success'
+    if: needs.snyk-scan.result == 'success'
 
     steps:
       - name: Checkout frontend
