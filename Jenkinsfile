@@ -70,12 +70,10 @@ pipeline {
                                      usernameVariable: 'NEXUS_USER',
                                      passwordVariable: 'NEXUS_PASSWORD')
                 ]) {
-                    sh """
-                    mvn deploy -DskipTests \
-                      -Dnexus.url=${NEXUS_URL} \
-                      -Dnexus.username=${NEXUS_USER} \
-                      -Dnexus.password=${NEXUS_PASSWORD}
-                    """
+                    configFileProvider([configFile(fileId: 'maven-settings', variable: 'MAVEN_SETTINGS')]) {
+                                    sh """
+                                    mvn deploy -DskipTests --settings $MAVEN_SETTINGS
+                                    """
                 }
             }
         }
