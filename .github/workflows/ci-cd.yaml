@@ -59,6 +59,10 @@ jobs:
     needs: build-test-analyze
 
     steps:
+
+      - name: Checkout code
+        uses: actions/checkout@v3
+
       - name: Install Snyk CLI
         run: npm install -g snyk
 
