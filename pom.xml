@@ -39,7 +39,7 @@
         <snapshotRepository>
             <id>nexus-credentials</id>
             <name>Nexus Snapshot Repository</name>
-            <url>https://tu-nexus/repository/maven-snapshots/</url>
+            <url>http://localhost:8082/repository/maven-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
 
