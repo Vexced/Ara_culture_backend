@@ -54,11 +54,12 @@ jobs:
             -Dsonar.java.binaries=target/classes
 
       - name: Snyk Scan
-        uses: snyk/actions@v2
+        uses: snyk/actions/maven@v3
         with:
           command: test
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
+          JAVA_HOME: ${{ env.JAVA_HOME_17_X64 }}
 
 
 
