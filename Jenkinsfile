@@ -70,7 +70,7 @@ pipeline {
                                      usernameVariable: 'NEXUS_USER',
                                      passwordVariable: 'NEXUS_PASSWORD')
                 ]) {
-                     configFileProvider([configFile(fileId: 'TU-ID-AQUI', variable: 'MAVEN_SETTINGS')]) {
+                     configFileProvider([configFile(fileId: 'ea1001b7-bea8-4df7-b20a-68ae4c92b09d', variable: 'MAVEN_SETTINGS')]) {
                                     sh """
                                     mvn deploy -DskipTests --settings $MAVEN_SETTINGS
                                     """
