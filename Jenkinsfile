@@ -93,7 +93,7 @@ pipeline {
                       set -e
                       docker stop ara-backend || true
                       docker rm ara-backend || true
-                      docker run -d --name ara-backend -p 8080:8080 ${IMAGE_TAG}
+                      docker run -d --name ara-backend -p 8081:8080 ${IMAGE_TAG}
                     '
                     """
                 }
