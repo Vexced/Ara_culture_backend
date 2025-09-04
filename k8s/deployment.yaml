@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: ara-backend
-          image: tuusuario/ara-backend:latest
+          image: vexced17/ara_culture_backend:latest
           ports:
             - containerPort: 8080
           env:
