@@ -21,7 +21,7 @@ spec:
             - containerPort: 8080
           env:
             - name: SPRING_DATASOURCE_URL
-              value: jdbc:postgresql://ara-postgres:5432/araculturedb
+              value: vexced17/ara_culture_backend:167138728cd98c6ccd4ca36e19931bab5ff8efab
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
