@@ -60,7 +60,7 @@ jobs:
           path: target/araculture-backend.jar
 
   snyk-scan:
-    runs-on: ubuntu-latest
+    runs-on-label: ubuntu-latest
     needs: build-test-analyze
 
     steps:
